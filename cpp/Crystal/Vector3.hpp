@@ -56,6 +56,19 @@ public:
     return v;
   }
 
+  Vector3 operator*(double d) const {
+    Vector3 v;
+    v.x = x * d;
+    v.y = y * d;
+    v.z = z * d;
+    return v;
+  }
+
+  friend Vector3 operator*(double d, const Vector3& v)
+  {
+    return v * d;
+  }
+
   Vector3 operator/(double d) const {
     d = 1.0 / d;
     return *this * d;
