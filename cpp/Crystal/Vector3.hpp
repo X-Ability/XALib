@@ -16,6 +16,9 @@ public:
   Vector3(double _x, double _y, double _z)
     : x(_x), y(_y), z(_z) {}
 
+  Vector3(double d[3])
+    : x(d[0]), y(d[1]), z(d[2]) {}
+
   void Assign(double _x, double _y, double _z) {
     x = _x;
     y = _y;
@@ -24,6 +27,10 @@ public:
 
   double Norm2() const {
     return x * x + y * y + z * z;
+  }
+  
+  double Norm() const {
+    return sqrt(Norm2());
   }
   
   void Normalize() {
@@ -46,14 +53,6 @@ public:
 
   Vector3 operator-(const Vector3& v) const {
     return *this + (-v);
-  }
-
-  Vector3 operator*(double d) const {
-    Vector3 v;
-    v.x = x * d;
-    v.y = y * d;
-    v.z = z * d;
-    return v;
   }
 
   Vector3 operator*(double d) const {
@@ -139,6 +138,15 @@ public:
     a[0][0] = a00; a[0][1] = a01; a[0][2] = a02;
     a[1][0] = a10; a[1][1] = a11; a[1][2] = a12;
     a[2][0] = a20; a[2][1] = a21; a[2][2] = a22;
+  }
+
+  Matrix33(const Vector3& v0,
+	   const Vector3& v1,
+	   const Vector3& v2)
+  {
+    a[0][0] = v0.x; a[0][1] = v0.y; a[0][2] = v0.z;
+    a[1][0] = v1.x; a[1][1] = v1.y; a[1][2] = v1.z;
+    a[2][0] = v2.x; a[2][1] = v2.y; a[2][2] = v2.z;
   }
 
   Matrix33(const Matrix33& m) {

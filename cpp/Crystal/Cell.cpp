@@ -56,13 +56,13 @@ void Cell::SetOriginAndTV(Vector3& vA0, Vector3& vA1, Vector3& vA2, Vector3& vA3
   SetTranslationVectors(vA1, vA2, vA3);
 }
 
-void Cell::GetTranslationVectors(Vector3& vA1, Vector3& vA2, Vector3& vA3) {
+void Cell::GetTranslationVectors(Vector3& vA1, Vector3& vA2, Vector3& vA3) const {
   vA1 = m_vA1;
   vA2 = m_vA2;
   vA3 = m_vA3;
 }
 
-void Cell::GetReciprocalVectors(Vector3& vB1, Vector3& vB2, Vector3& vB3) {
+void Cell::GetReciprocalVectors(Vector3& vB1, Vector3& vB2, Vector3& vB3) const {
   Vector3 vA1 = m_vA1;
   Vector3 vA2 = m_vA2;
   Vector3 vA3 = m_vA3;
@@ -89,7 +89,15 @@ Matrix33 Cell::GetMatF2R() const{
   return m_matF2R;
 }
 
-Vector3 Cell::GetLength() {
+Vector3 Cell::GetPosR2F(const Vector3& v) const{
+  return m_matR2F * v;
+}
+
+Vector3 Cell::GetPosF2R(const Vector3& v) const{
+  return m_matF2R * v;
+}
+
+Vector3 Cell::GetLength() const {
   double aa = sqrt(m_vA1*m_vA1);
   double bb = sqrt(m_vA2*m_vA2);
   double cc = sqrt(m_vA3*m_vA3);
@@ -97,7 +105,7 @@ Vector3 Cell::GetLength() {
   return v;
 }
 
-Vector3 Cell::GetAngle() {
+Vector3 Cell::GetAngle() const {
   Vector3 vLen = GetLength();
   double al = acos( (m_vA2 * m_vA3) / (vLen.y * vLen.z) ) * 180.0 / M_PI;
   double be = acos( (m_vA3 * m_vA1) / (vLen.z * vLen.x) ) * 180.0 / M_PI;
@@ -123,8 +131,13 @@ void Cell::AddSymOper(SymOper sym) {
   m_SymOpers.push_back(sym);
 }
 
-void Cell::Print() {
-  cout << m_vA1.x << " " << m_vA1.y << " " << m_vA1.z << endl;
-  cout << m_vA2.x << " " << m_vA2.y << " " << m_vA2.z << endl;
-  cout << m_vA3.x << " " << m_vA3.y << " " << m_vA3.z << endl;
+void Cell::Print() const {
+  cout << "a1 " << m_vA1.x << " " << m_vA1.y << " " << m_vA1.z << endl;
+  cout << "a2 " << m_vA2.x << " " << m_vA2.y << " " << m_vA2.z << endl;
+  cout << "a3 " << m_vA3.x << " " << m_vA3.y << " " << m_vA3.z << endl;
+
+  Vector3 v = GetLength();
+  Vector3 u = GetAngle();
+  cout << "abc   " << v.x << " " << v.y << " " << v.z << endl;
+  cout << "angle " << u.x << " " << u.y << " " << u.z << endl;
 }
